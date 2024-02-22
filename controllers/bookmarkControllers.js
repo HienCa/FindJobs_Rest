@@ -1,11 +1,20 @@
 const Bookmark = require('../models/Bookmark');
+const Job = require('../models/Job');
 
 
 module.exports = {
     createBookmark: async (req, res) => {
-        const newBookmark = new Bookmark(req.body);
+
+        const jobId = req.params.job;
+
 
         try {
+            const job = await Job.findById(jobId);
+            if (!job) {
+                return res.status(404).json({ error: "Job not found!" });
+            }
+
+            const newBookmark = new Bookmark({ job: job, userId: req.user.id });
             const createdBookmark = await newBookmark.save();
             const { __v, createdAt, updatedAt, ...newBookmarkInfo } = createdBookmark._doc;
 
@@ -43,7 +52,7 @@ module.exports = {
     getBookmark: async (req, res) => {
         try {
             const bookmark = await Bookmark.findById(req.params.id)
-            const {  __v, createdAt, updatedAt, ...bookmarkData } = bookmark._doc
+            const { __v, createdAt, updatedAt, ...bookmarkData } = bookmark._doc
 
             res.status(200).json(bookmarkData);
 

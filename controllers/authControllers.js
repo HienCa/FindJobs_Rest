@@ -35,9 +35,9 @@ module.exports = {
 
             const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-            const { password, __v, createdAt, ...others } = user._doc;
+            const { _id, profile, ...others } = user._doc;
 
-            res.status(200).json({ token, user: others });
+            res.status(200).json({ token, id: _id, profile });
 
         } catch (error) {
             console.error(error);

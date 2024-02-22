@@ -28,18 +28,10 @@ app.get('/', (req, res) => {
     res.send('Hello my friends')
 })
 
-//http://localhost:5001/api/
 app.use("/api/", authRoute)
-
-//http://localhost:5001/api/users/
 app.use("/api/users", userRoute)
-
-//http://localhost:5001/api/jobs/
 app.use("/api/jobs", jobRoute)
-
-//http://localhost:5001/api/bookmarks/
 app.use("/api/bookmarks", bookmarkRoute)
-
 
 
 mongoose.connect(process.env.MONGODB_URI).then(() => {
