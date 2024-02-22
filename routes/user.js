@@ -10,12 +10,12 @@ const { verifyAndAuthorization, verifyToken, verifyAdmin } = require('../middlew
 // router.put('/:id', verifyAndAuthorization, userController.updateUser);
 // router.delete('/:id', verifyAndAuthorization, userController.deleteUser);
 
-router.get('/', verifyAdmin, userController.getAllUser);
-router.get('/', verifyAndAuthorization, userController.getUser);
+router.get('/', userController.getAllUser);
+router.get('/:id', userController.getUser);
 
-router.post('/', verifyAdmin, userController.createUser);
-router.put('/', verifyAndAuthorization, userController.updateUser);
-router.delete('/', verifyAndAuthorization, userController.deleteUser);
+router.post('/', userController.createUser);
+router.put('/:id', userController.updateUser);
+router.delete('/:id', userController.deleteUser);
 
 
 module.exports = router;
