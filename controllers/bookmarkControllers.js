@@ -62,7 +62,7 @@ module.exports = {
     },
     getAllBookmark: async (req, res) => {
         try {
-            const bookmarks = await Bookmark.find();
+            const bookmarks = await Bookmark.find({ userId: req.params.id });
             console.log(bookmarks);
             res.status(200).json(bookmarks);
 
