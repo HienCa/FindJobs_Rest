@@ -1,4 +1,4 @@
-const userController = require('../controllers/userControllers');
+const userController = require('../controllers/userController');
 const { Router } = require('express')
 const router = Router();
 const { verifyAndAuthorization, verifyToken, verifyAdmin } = require('../middleware/verifyToken')

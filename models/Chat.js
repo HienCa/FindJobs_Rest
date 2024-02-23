@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const chatSchema = mongoose.Schema({
-    chatName: { rype: String, trim: true },
+    chatName: { type: String, trim: true },
     isGroupChat: { type: Boolean, default: false },
     users: [
         {
@@ -9,7 +9,7 @@ const chatSchema = mongoose.Schema({
             ref: "User"
         }
     ],
-    lastestMessage: {
+    latestMessage: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Message"
     },

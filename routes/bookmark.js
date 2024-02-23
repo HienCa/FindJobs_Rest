@@ -1,4 +1,4 @@
-const bookmarkController = require('../controllers/bookmarkControllers');
+const bookmarkController = require('../controllers/bookmarkController');
 const { Router } = require('express')
 const router = Router();
 const { verifyAndAuthorization, verifyToken, verifyAdmin } = require('../middleware/verifyToken')

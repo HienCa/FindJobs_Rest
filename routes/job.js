@@ -1,4 +1,4 @@
-const jobController = require('../controllers/jobControllers');
+const jobController = require('../controllers/jobController');
 const { Router } = require('express')
 const router = Router();
 const { verifyAndAuthorization, verifyToken, verifyAdmin } = require('../middleware/verifyToken')
