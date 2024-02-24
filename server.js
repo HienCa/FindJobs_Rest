@@ -34,8 +34,8 @@ app.use("/api/", authRoute)
 app.use("/api/users", userRoute)
 app.use("/api/jobs", jobRoute)
 app.use("/api/bookmarks", bookmarkRoute)
-app.use("/api/chat", chatRoute)
-app.use("/api/message", messageRoute)
+app.use("/api/chats", chatRoute)
+app.use("/api/messages", messageRoute)
 
 mongoose.connect(process.env.MONGODB_URI).then(() => {
     const server = app.listen(process.env.PORT || port, () => {
