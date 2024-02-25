@@ -17,9 +17,14 @@ module.exports = {
                     users: { $elemMatch: { $eq: req.user.id } },
                 },
                 {
-                    users: { $elemMatch: { $eq: req.userId } },
+                    users: { $elemMatch: { $eq: userId } },
                 },
             ]
+        }).populate("users", "-password").populate("latestMessage");
+
+        isChat = await User.populate(isChat, {
+            path: "latestMessage.sender",
+            select: "username profile email"
         });
 
         if (isChat.length > 0) {
@@ -44,7 +49,6 @@ module.exports = {
         }
     },
     getChat: async (req, res) => {
-
         try {
             const results = await Chat.find({ users: { $elemMatch: { $eq: req.user.id } } })
                 .populate("users", "-password")
@@ -57,13 +61,14 @@ module.exports = {
                     }
                 })
                 .sort({ updatedAt: -1 });
-
+    
             res.status(200).send(results);
-
         } catch (error) {
-            res.status(500).json("Failed to retrieve chat");
+            console.error(error);
+            res.status(500).json({ error: "Failed to retrieve chat" });
         }
     },
+    
 
 
 
