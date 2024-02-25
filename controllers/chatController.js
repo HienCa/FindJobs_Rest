@@ -14,7 +14,7 @@ module.exports = {
             isGroupChat: false,
             $and: [
                 {
-                    users: { $elemMatch: { $eq: req.user.id } },
+                    users: { $elemMatch: { $eq: req.params.id } },
                 },
                 {
                     users: { $elemMatch: { $eq: userId } },
@@ -28,13 +28,13 @@ module.exports = {
         });
 
         if (isChat.length > 0) {
-            res.send(isChat[0]);
+            res.json(isChat[0]);//send
         } else {
             var chatData = {
-                chatName: req.user.id,
+                chatName: req.params.id,
                 isGroupChat: false,
                 users: [
-                    req.user.id, userId
+                    req.params.id, userId
                 ]
             }
         }
@@ -50,7 +50,7 @@ module.exports = {
     },
     getChat: async (req, res) => {
         try {
-            const results = await Chat.find({ users: { $elemMatch: { $eq: req.user.id } } })
+            const results = await Chat.find({ users: { $elemMatch: { $eq: req.params.id } } })
                 .populate("users", "-password")
                 .populate("groupAdmin", "-password")
                 .populate({
@@ -61,8 +61,9 @@ module.exports = {
                     }
                 })
                 .sort({ updatedAt: -1 });
+            print(results)
     
-            res.status(200).send(results);
+            res.status(200).json(results);
         } catch (error) {
             console.error(error);
             res.status(500).json({ error: "Failed to retrieve chat" });

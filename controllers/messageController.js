@@ -37,7 +37,7 @@ module.exports = {
         }
 
         var newMessage = {
-            sender: req.user.id,
+            sender: req.params.id,
             content: content,
             receiver: receiver,
             chat: chatId
