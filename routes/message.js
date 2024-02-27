@@ -3,8 +3,8 @@ const { Router } = require('express')
 const router = Router();
 const { verifyAndAuthorization, verifyToken, verifyAdmin } = require('../middleware/verifyToken')
 
-router.get('/:id',  messageController.getAllMessgae);
-router.post('/', messageController.sendMessgae);
+router.get('/:id', verifyToken, messageController.getAllMessage);
+router.post('/', verifyToken, messageController.sendMessgae);
 
 
 module.exports = router;

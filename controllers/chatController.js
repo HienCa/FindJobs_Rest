@@ -5,7 +5,7 @@ const Chat = require('../models/Chat');
 
 module.exports = {
     accessChat: async (req, res) => {
-        const { userId } = req.body;
+        const { userId, curentId } = req.body;
         if (!userId) {
             res.status(400).json("Invalid user id");
         }
@@ -14,7 +14,7 @@ module.exports = {
             isGroupChat: false,
             $and: [
                 {
-                    users: { $elemMatch: { $eq: req.params.id } },
+                    users: { $elemMatch: { $eq: curentId } },
                 },
                 {
                     users: { $elemMatch: { $eq: userId } },
@@ -28,13 +28,13 @@ module.exports = {
         });
 
         if (isChat.length > 0) {
-            res.json(isChat[0]);//send
+            res.json(isChat[0]);
         } else {
             var chatData = {
-                chatName: req.params.id,
+                chatName: curentId,
                 isGroupChat: false,
                 users: [
-                    req.params.id, userId
+                    curentId, userId
                 ]
             }
         }
@@ -48,9 +48,12 @@ module.exports = {
             res.status(500).json({ error: "Failed to create the chat!" });
         }
     },
-    getChat: async (req, res) => {
+    getChats: async (req, res) => {
         try {
+            const userId = req.params.id;
+    
             const results = await Chat.find({ users: { $elemMatch: { $eq: req.params.id } } })
+
                 .populate("users", "-password")
                 .populate("groupAdmin", "-password")
                 .populate({
@@ -61,16 +64,34 @@ module.exports = {
                     }
                 })
                 .sort({ updatedAt: -1 });
-            print(results)
     
             res.status(200).json(results);
         } catch (error) {
             console.error(error);
-            res.status(500).json({ error: "Failed to retrieve chat" });
+            res.status(500).json({ error: "Failed to retrieve chats" });
         }
     },
-    
 
+    getChat: async (req, res) => {
+        try {
+            console.log("Chat ID:", req.params.id);
+
+            const chatId = req.params.id;
+
+            const chat = await Chat.findOne()
+                .populate("users", "-password")
+                .sort({ updatedAt: -1 });
+
+            if (!chat) {
+                return res.status(404).json({ error: "Chat not found" });
+            }
+
+            res.status(200).json(chat);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: "Failed to retrieve chat" });
+        }
+    }
 
 
 }

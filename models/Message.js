@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const MessageSchema = new mongoose.Schema({
-    username: { type: String, required: true, unique: true },
+
 
     sender: {
         type: mongoose.Schema.Types.ObjectId,

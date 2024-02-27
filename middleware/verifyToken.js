@@ -10,7 +10,7 @@ const verifyToken = (req, res, next) => {
             if (err) res.status(403).json('Invalid token')
 
             req.user = user;
-            console.log(user);
+            console.log(user)
 
             next()
         })
@@ -34,22 +34,24 @@ const verifyAndAuthorization = (req, res, next) => {
 }
 
 const verifyAdmin = (req, res, next) => {
-    verifyToken(req, res, () => {
-        // chua log ra isAdmin
+    verifyToken(req, res, async () => {
 
-        // {
-        //     userId: '65d60818ba94d68f7e54aa2c',
-        //         iat: 1708531108,
-        //             exp: 1708534708
-        // }
-
-        if (req.user.isAdmin) {
-            next();
+        const userId = req.user.userId;
+        const user = await User.findById(userId);
+        
+        if (!user) {
+            return res.status(500).json({ error: "Error verifying user." });
         } else {
-            res.status(403).json("You are restriced from performing this operation.")
+            if (user.isAdmin) {
+                next();
+            } else {
+                res.status(403).json({ error: "You are restricted from performing this operation." });
+            }
         }
-    })
-}
+
+    });
+};
+
 
 
 module.exports = { verifyToken, verifyAndAuthorization, verifyAdmin }
